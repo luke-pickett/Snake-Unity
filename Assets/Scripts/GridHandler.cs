@@ -40,17 +40,22 @@ public class GridHandler : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        
-    }
-
     public GameObject GrabTile(int xValue, int yValue)
     {
-        if (xValue > gridSizeX || yValue > gridSizeY)
+        if (xValue < 0 || xValue > gridSizeX || yValue < 0 || yValue > gridSizeY)
         {
             return null;
         }
         return _grid[xValue, yValue];
+    }
+
+    public bool IsEdge(int xValue, int yValue)
+    {
+        if (xValue <= 0 || xValue >= gridSizeX || yValue <= 0 || yValue >= gridSizeY)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
