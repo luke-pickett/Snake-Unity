@@ -51,11 +51,19 @@ public class GridHandler : MonoBehaviour
 
     public bool IsEdge(int xValue, int yValue)
     {
-        if (xValue <= 0 || xValue >= gridSizeX || yValue <= 0 || yValue >= gridSizeY)
+        if (xValue <= 0 || xValue >= gridSizeX-1 || yValue <= 0 || yValue >= gridSizeY-1)
         {
             return true;
         }
 
         return false;
+    }
+
+    public GameObject GrabMiddleTile()
+    {
+        int rows = gridSizeX - 1;
+        int col = gridSizeY - 1;
+        
+        return _grid[(int) rows / 2, (int) col / 2];
     }
 }
