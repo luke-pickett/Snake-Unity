@@ -8,7 +8,12 @@ public class PlayerMovementBehavior : MonoBehaviour
 {
     private GameObject _snakeHead;
     private String _direction;
-    public GameObject currentTile;
+    public int[] coordinates;
+
+    private void OnEnable()
+    {
+        
+    }
 
     private void Start()
     {
@@ -33,6 +38,24 @@ public class PlayerMovementBehavior : MonoBehaviour
         else if ((Input.GetKeyDown(KeyCode.A)))
         {
             _direction = "west";
+        }
+    }
+
+    private void Move()
+    {
+        GameObject[] surroundingTiles = GridHandler.instance.GrabAdjacentTiles(
+            coordinates[0], coordinates[1]
+            );
+        
+        switch (_direction)
+        {
+            case "north":
+                if (surroundingTiles[0] != null)
+                {
+                    
+                }
+
+                return;
         }
     }
 }

@@ -117,13 +117,14 @@ public class GridHandler : MonoBehaviour
         return returnArray;
     }
 
-    public void PlaceObject(GameObject obj, int xValue, int yValue)
+    public GameObject PlaceObject(GameObject obj, int xValue, int yValue)
     {
         GameObject targetTile = GrabTile(xValue, yValue);
         Vector3 targetTilePos = targetTile.transform.position;
         TileProperties targetTileProperties = targetTile.GetComponent<TileProperties>();
         GameObject createdObj = Instantiate(obj, targetTilePos += new Vector3(0, 1, 0), new Quaternion());
         targetTileProperties.contains.Add(createdObj);
+        return createdObj;
     }
 
     public void RemoveObjects(int xValue, int yValue)
