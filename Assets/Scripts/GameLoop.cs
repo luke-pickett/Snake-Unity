@@ -20,13 +20,12 @@ public class GameLoop : MonoBehaviour
     private int _score = 0;
     private float timer = 0f;
 
-    private void OnEnable()
-    {
-        instance = this;
-    }
-
+    private void OnEnable() {}
+    [SerializeField] private GameObject _snakeHeadPrefab;
     void Start()
     {
+        instance = this;
+
         _snakeHead = GridHandler.instance.PlaceObject( snakeHeadPrefab, 0,0);
         _snake.Add(_snakeHead);
         _snakeHead.GetComponent<PlayerMovementBehavior>().coordinates = new[] { 0, 0 };
