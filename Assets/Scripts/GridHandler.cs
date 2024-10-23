@@ -134,6 +134,18 @@ public class GridHandler : MonoBehaviour
             Destroy(obj);
         }
     }
+    public void RemoveObjects(int xValue, int yValue, GameObject exception)
+    {
+        GameObject targetTile = GrabTile(xValue, yValue);
+        foreach (GameObject obj in targetTile.GetComponent<TileProperties>().contains)
+        {
+            if (obj != exception)
+            {
+                Destroy(obj);
+            }
+        }
+    }
+    
 
     private void Start()
     {
