@@ -34,8 +34,8 @@ public class FruitBehaviour : MonoBehaviour
     void SpawnFruit()
     {
         // Get random position in grid
-        int randomX = Random.Range(0, GridHandler.instance.gridSizeX);
-        int randomY = Random.Range(0, GridHandler.instance.gridSizeY);
+        int randomX = Random.Range(0, GridHandler.instance.GetGridSizeX());
+        int randomY = Random.Range(0, GridHandler.instance.GetGridSizeY());
 
         // Select random fruit from the gallery
         GameObject randomFruit = _fruitGallery[Random.Range(0, _fruitGallery.Length)];

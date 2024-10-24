@@ -43,6 +43,17 @@ public class GridHandler : MonoBehaviour
         }
     }
 
+    // Public getters for grid size
+    public int GetGridSizeX()
+    {
+        return gridSizeX;
+    }
+
+    public int GetGridSizeY()
+    {
+        return gridSizeY;
+    }
+
     public GameObject GrabTile(int xValue, int yValue)
     {
         if (xValue < 0 || xValue > gridSizeX || yValue < 0 || yValue > gridSizeY)
