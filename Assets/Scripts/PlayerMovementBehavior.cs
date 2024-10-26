@@ -55,78 +55,61 @@ public class PlayerMovementBehavior : MonoBehaviour
         GameObject[] surroundingTiles = GridHandler.instance.GrabAdjacentTiles(
             coordinates[0], coordinates[1]
             );
-        
+        GameObject newCurrentTile = _currentTile;
         switch (_direction)
         {
+            
             case "north":
-                if (surroundingTiles[0] != null)
+                if (surroundingTiles[0] == null)
                 {
-                    GameObject newCurrentTile = surroundingTiles[0];
-                    TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
-                    _currentTileProperties.contains.Remove(_snakeHead);
-                    newCurrentTileProperties.contains.Add(_snakeHead);
-                    _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
-                    _currentTile = newCurrentTile;
-                    _currentTileProperties = newCurrentTileProperties;
-                    coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
-
+                    PlayerHit?.Invoke();
+                    return;
                 }
                 else
                 {
-                    PlayerHit?.Invoke();
+                    newCurrentTile = surroundingTiles[0];
+                    break;
                 }
-                return;
             case "east":
-                if (surroundingTiles[1] != null)
+                if (surroundingTiles[1] == null)
                 {
-                    GameObject newCurrentTile = surroundingTiles[1];
-                    TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
-                    _currentTileProperties.contains.Remove(_snakeHead);
-                    newCurrentTileProperties.contains.Add(_snakeHead);
-                    _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
-                    _currentTile = newCurrentTile;
-                    _currentTileProperties = newCurrentTileProperties;
-                    coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
+                    PlayerHit?.Invoke();
+                    return;
                 }
                 else
                 {
-                    PlayerHit?.Invoke();
+                    newCurrentTile = surroundingTiles[1];
+                    break;
                 }
-                return;
             case "south":
-                if (surroundingTiles[2] != null)
+                if (surroundingTiles[2] == null)
                 {
-                    GameObject newCurrentTile = surroundingTiles[2];
-                    TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
-                    _currentTileProperties.contains.Remove(_snakeHead);
-                    newCurrentTileProperties.contains.Add(_snakeHead);
-                    _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
-                    _currentTile = newCurrentTile;
-                    _currentTileProperties = newCurrentTileProperties;
-                    coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
+                    PlayerHit?.Invoke();
+                    return;
                 }
                 else
                 {
-                    PlayerHit?.Invoke();
+                    newCurrentTile = surroundingTiles[2];
+                    break;
                 }
-                return;
             case "west":
-                if (surroundingTiles[3] != null)
+                if (surroundingTiles[3] == null)
                 {
-                    GameObject newCurrentTile = surroundingTiles[3];
-                    TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
-                    _currentTileProperties.contains.Remove(_snakeHead);
-                    newCurrentTileProperties.contains.Add(_snakeHead);
-                    _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
-                    _currentTile = newCurrentTile;
-                    _currentTileProperties = newCurrentTileProperties;
-                    coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
+                    PlayerHit?.Invoke();
+                    return;
                 }
                 else
                 {
-                    PlayerHit?.Invoke();
+                    newCurrentTile = surroundingTiles[3];
+                    break;
                 }
-                return;
         }
+        TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
+        _currentTileProperties.contains.Remove(_snakeHead);
+        newCurrentTileProperties.contains.Add(_snakeHead);
+        _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
+        _currentTile = newCurrentTile;
+        _currentTileProperties = newCurrentTileProperties;
+        coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
     }
 }
