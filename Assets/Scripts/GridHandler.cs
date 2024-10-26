@@ -127,10 +127,66 @@ public class GridHandler : MonoBehaviour
         }
         return returnArray;
     }
+    public GameObject[] GrabAdjacentTiles(GameObject tile)
+    {
+        TileProperties tileProperties = tile.GetComponent<TileProperties>();
+        int xValue = tileProperties.xValue;
+        int yValue = tileProperties.yValue;
+        GameObject[] returnArray = new GameObject[4];
+        // Grabs North tile
+        if (yValue < gridSizeY-1)
+        {
+            returnArray[0] = GrabTile(xValue, yValue + 1);
+        }
+        else
+        {
+            returnArray[0] = null;
+        }
+        
+        // Grabs East tile
+        if (xValue < gridSizeX - 1)
+        {
+            returnArray[1] = GrabTile(xValue + 1, yValue);
+        }
+        else
+        {
+            returnArray[1] = null;
+        }
+        
+        // Grabs South tile
+        if (yValue > 0)
+        {
+            returnArray[2] = GrabTile(xValue, yValue-1);
+        }
+        else
+        {
+            returnArray[2] = null;
+        }
+        
+        // Grabs West tile
+        if (xValue > 0)
+        {
+            returnArray[3] = GrabTile(xValue - 1, yValue);
+        }
+        else
+        {
+            returnArray[3] = null;
+        }
+        return returnArray;
+    }
 
     public GameObject PlaceObject(GameObject obj, int xValue, int yValue)
     {
         GameObject targetTile = GrabTile(xValue, yValue);
+        Vector3 targetTilePos = targetTile.transform.position;
+        TileProperties targetTileProperties = targetTile.GetComponent<TileProperties>();
+        GameObject createdObj = Instantiate(obj, targetTilePos += new Vector3(0, 1, 0), new Quaternion());
+        targetTileProperties.contains.Add(createdObj);
+        return createdObj;
+    }
+    public GameObject PlaceObject(GameObject obj, GameObject tile)
+    {
+        GameObject targetTile = tile;
         Vector3 targetTilePos = targetTile.transform.position;
         TileProperties targetTileProperties = targetTile.GetComponent<TileProperties>();
         GameObject createdObj = Instantiate(obj, targetTilePos += new Vector3(0, 1, 0), new Quaternion());
@@ -146,9 +202,28 @@ public class GridHandler : MonoBehaviour
             Destroy(obj);
         }
     }
+    public void RemoveObjects(GameObject tile)
+    {
+        GameObject targetTile = tile;
+        foreach (GameObject obj in targetTile.GetComponent<TileProperties>().contains)
+        {
+            Destroy(obj);
+        }
+    }
     public void RemoveObjects(int xValue, int yValue, GameObject exception)
     {
         GameObject targetTile = GrabTile(xValue, yValue);
+        foreach (GameObject obj in targetTile.GetComponent<TileProperties>().contains)
+        {
+            if (obj != exception)
+            {
+                Destroy(obj);
+            }
+        }
+    }
+    public void RemoveObjects(GameObject tile, GameObject exception)
+    {
+        GameObject targetTile = tile;
         foreach (GameObject obj in targetTile.GetComponent<TileProperties>().contains)
         {
             if (obj != exception)
