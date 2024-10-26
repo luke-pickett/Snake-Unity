@@ -8,6 +8,7 @@ public class GameLoop : MonoBehaviour
 
     public static GameLoop instance;
     [SerializeField] private GameObject snakeHeadPrefab;
+    [SerializeField] private GameObject snakeTailPrefab;
     [SerializeField] private float timeBetweenTurns;
 
     public delegate void TurnTimeOver();

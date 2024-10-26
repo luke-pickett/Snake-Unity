@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FruitBehaviour : MonoBehaviour
+public class FruitSpawnBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject[] _fruitGallery; // Array of fruit meshes
     [SerializeField] private float _spawnTimer = 5f; // Initial spawn timer

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -55,55 +56,42 @@ public class PlayerMovementBehavior : MonoBehaviour
         GameObject[] surroundingTiles = GridHandler.instance.GrabAdjacentTiles(
             coordinates[0], coordinates[1]
             );
-        GameObject newCurrentTile = _currentTile;
+        GameObject newCurrentTile = null;
+        GameObject aheadTile = null;
+        TileProperties aheadTileProperties = null;
         switch (_direction)
         {
             
             case "north":
-                if (surroundingTiles[0] == null)
-                {
-                    PlayerHit?.Invoke();
-                    return;
-                }
-                else
-                {
-                    newCurrentTile = surroundingTiles[0];
-                    break;
-                }
+                aheadTile = surroundingTiles[0];
+                break;
             case "east":
-                if (surroundingTiles[1] == null)
-                {
-                    PlayerHit?.Invoke();
-                    return;
-                }
-                else
-                {
-                    newCurrentTile = surroundingTiles[1];
-                    break;
-                }
+                aheadTile = surroundingTiles[1];
+                break;
             case "south":
-                if (surroundingTiles[2] == null)
-                {
-                    PlayerHit?.Invoke();
-                    return;
-                }
-                else
-                {
-                    newCurrentTile = surroundingTiles[2];
-                    break;
-                }
+                aheadTile = surroundingTiles[2];
+                break;
             case "west":
-                if (surroundingTiles[3] == null)
-                {
-                    PlayerHit?.Invoke();
-                    return;
-                }
-                else
-                {
-                    newCurrentTile = surroundingTiles[3];
-                    break;
-                }
+                aheadTile = surroundingTiles[3];
+                break;
         }
+        if (aheadTile == null)
+        {
+            PlayerHit?.Invoke();
+            return;
+        }
+        aheadTileProperties = aheadTile.GetComponent<TileProperties>();
+        List<GameObject> aheadContainedList = aheadTileProperties.contains;
+        // Sees if any Gameobject in the list has the tag "Player"
+        bool hasPlayer = aheadContainedList.Cast<GameObject>().Any(obj => obj.CompareTag("Player"));
+        if (hasPlayer)
+        {
+            PlayerHit?.Invoke();
+            return;
+        }
+
+        newCurrentTile = aheadTile;
+        
         TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
         _currentTileProperties.contains.Remove(_snakeHead);
         newCurrentTileProperties.contains.Add(_snakeHead);
