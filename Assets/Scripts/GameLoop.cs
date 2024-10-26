@@ -11,7 +11,6 @@ public class GameLoop : MonoBehaviour
     [SerializeField] private float timeBetweenTurns;
 
     public delegate void TurnTimeOver();
-
     public static event TurnTimeOver ChangeTurn;
     
     private GameObject _snakeHead;
@@ -20,8 +19,10 @@ public class GameLoop : MonoBehaviour
     private int _score = 0;
     private float timer = 0f;
 
-    private void OnEnable() {}
-    [SerializeField] private GameObject _snakeHeadPrefab;
+    private void OnEnable()
+    {
+        PlayerMovementBehavior.PlayerHit += Gameover;
+    }
     void Start()
     {
         instance = this;
@@ -36,6 +37,12 @@ public class GameLoop : MonoBehaviour
         if (timer >= timeBetweenTurns)
         {
             ChangeTurn?.Invoke();
+            timer = 0;
         }
+    }
+
+    void Gameover()
+    {
+        _snakeHead.GetComponent<PlayerMovementBehavior>().enabled = false;
     }
 }
