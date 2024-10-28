@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameLoop : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameLoop : MonoBehaviour
     public static event TurnTimeOver ChangeTurn;
     
     private GameObject _snakeHead;
-    private List<GameObject> _snake = new List<GameObject>();
+    public List<GameObject> snake = new List<GameObject>();
 
     private int _score = 0;
     private float timer = 0f;
@@ -29,7 +30,7 @@ public class GameLoop : MonoBehaviour
         instance = this;
 
         _snakeHead = GridHandler.instance.PlaceObject( snakeHeadPrefab, 0,0);
-        _snake.Add(_snakeHead);
+        snake.Add(_snakeHead);
         _snakeHead.GetComponent<PlayerMovementBehavior>().coordinates = new[] { 0, 0 };
     }
     void Update()

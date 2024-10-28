@@ -8,7 +8,15 @@ using UnityEngine;
 public class PlayerMovementBehavior : MonoBehaviour
 {
     private GameObject _snakeHead;
-    private String _direction = "north";
+
+    enum Direction
+    {
+        North,
+        East,
+        South,
+        West
+    }
+    private Direction _direction = Direction.North;
     public int[] coordinates;
     private GameObject _currentTile;
     private TileProperties _currentTileProperties;
@@ -35,19 +43,19 @@ public class PlayerMovementBehavior : MonoBehaviour
         // Controls
         if (Input.GetKeyDown(KeyCode.W))
         {
-            _direction = "north";
+            _direction = Direction.North;
         }
         else if ((Input.GetKeyDown(KeyCode.D)))
         {
-            _direction = "east";
+            _direction = Direction.East;
         }
         else if ((Input.GetKeyDown(KeyCode.S)))
         {
-            _direction = "south";
+            _direction = Direction.South;
         }
         else if ((Input.GetKeyDown(KeyCode.A)))
         {
-            _direction = "west";
+            _direction = Direction.West;
         }
     }
 
@@ -61,17 +69,16 @@ public class PlayerMovementBehavior : MonoBehaviour
         TileProperties aheadTileProperties = null;
         switch (_direction)
         {
-            
-            case "north":
+            case Direction.North:
                 aheadTile = surroundingTiles[0];
                 break;
-            case "east":
+            case Direction.East:
                 aheadTile = surroundingTiles[1];
                 break;
-            case "south":
+            case Direction.South:
                 aheadTile = surroundingTiles[2];
                 break;
-            case "west":
+            case Direction.West:
                 aheadTile = surroundingTiles[3];
                 break;
         }
@@ -99,5 +106,10 @@ public class PlayerMovementBehavior : MonoBehaviour
         _currentTile = newCurrentTile;
         _currentTileProperties = newCurrentTileProperties;
         coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
+    }
+
+    private void AddToSnake()
+    {
+        
     }
 }

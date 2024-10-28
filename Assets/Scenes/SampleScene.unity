@@ -467,4 +467,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snakeHeadPrefab: {fileID: 6982049656841947120, guid: ffbaec482d566aa47b4953106bc9f141,
     type: 3}
+  snakeTailPrefab: {fileID: 5391016846620405751, guid: 9fe42eb7885edae4687f6869ebe5275a,
+    type: 3}
   timeBetweenTurns: 0.5
