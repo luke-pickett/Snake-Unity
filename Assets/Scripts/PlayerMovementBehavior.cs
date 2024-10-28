@@ -9,14 +9,17 @@ public class PlayerMovementBehavior : MonoBehaviour
 {
     private GameObject _snakeHead;
 
+    [SerializeField] private  GameObject _snakeTailPrefab;
+
     enum Direction
     {
-        North,
-        East,
+        North, East,
         South,
-        West
+        West,
+        None
     }
     private Direction _direction = Direction.North;
+    private Direction _previousDirection = Direction.None;
     public int[] coordinates;
     private GameObject _currentTile;
     private TileProperties _currentTileProperties;
@@ -106,10 +109,36 @@ public class PlayerMovementBehavior : MonoBehaviour
         _currentTile = newCurrentTile;
         _currentTileProperties = newCurrentTileProperties;
         coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
+        _previousDirection = _direction;
     }
 
     private void AddToSnake()
     {
-        
+        GameObject[] surroundingTiles = GridHandler.instance.GrabAdjacentTiles(
+            coordinates[0], coordinates[1]
+        );
+
+        GameObject targetTile = null;
+        switch (_previousDirection)
+        {
+            case Direction.North:
+                targetTile = surroundingTiles[2];
+                break;
+            case Direction.East:
+                targetTile = surroundingTiles[3];
+                break;
+            case Direction.South:
+                targetTile = surroundingTiles[0];
+                break;
+            case Direction.West:
+                targetTile = surroundingTiles[1];
+                break;
+        }
+
+        if (targetTile != null)
+        {
+            GameObject newSegment = GridHandler.instance.PlaceObject(_snakeTailPrefab, targetTile);
+            GameLoop.instance.snake.Add(newSegment);
+        }
     }
 }
