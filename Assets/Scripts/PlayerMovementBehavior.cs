@@ -44,19 +44,19 @@ public class PlayerMovementBehavior : MonoBehaviour
     private void Update()
     {
         // Controls
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && _direction != Direction.South)
         {
             _direction = Direction.North;
         }
-        else if ((Input.GetKeyDown(KeyCode.D)))
+        else if ((Input.GetKeyDown(KeyCode.D)&& _direction != Direction.West))
         {
             _direction = Direction.East;
         }
-        else if ((Input.GetKeyDown(KeyCode.S)))
+        else if ((Input.GetKeyDown(KeyCode.S)&& _direction != Direction.North))
         {
             _direction = Direction.South;
         }
-        else if ((Input.GetKeyDown(KeyCode.A)))
+        else if ((Input.GetKeyDown(KeyCode.A)&& _direction != Direction.East))
         {
             _direction = Direction.West;
         }
