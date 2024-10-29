@@ -4,25 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerMovementBehavior : MonoBehaviour
+public class PlayerMovementBehavior : MovementBehavior
 {
     private GameObject _snakeHead;
 
-    [SerializeField] private  GameObject _snakeTailPrefab;
-
-    enum Direction
-    {
-        North, East,
-        South,
-        West,
-        None
-    }
-    private Direction _direction = Direction.North;
-    private Direction _previousDirection = Direction.None;
-    public int[] coordinates;
-    private GameObject _currentTile;
-    private TileProperties _currentTileProperties;
+    public GameObject snakeTailPrefab;
 
     public delegate void HeadCollided();
 
@@ -31,34 +19,42 @@ public class PlayerMovementBehavior : MonoBehaviour
     private void OnEnable()
     {
         GameLoop.ChangeTurn += Move;
+        FruitBehavior.FruitCollected += AddToSnake;
     }
 
     private void Start()
     {
-        GameLoop gameLoop = GameLoop.instance;
+        coordinates = new[] { 0, 0 };
+        direction = GameLoop.Direction.North;
+        
         _snakeHead = gameObject;
-        _currentTile = GridHandler.instance.GrabTile(coordinates[0], coordinates[1]);
-        _currentTileProperties = _currentTile.GetComponent<TileProperties>();
+        currentTile = GridHandler.instance.GrabTile(coordinates[0], coordinates[1]);
+        currentTileProperties = currentTile.GetComponent<TileProperties>();
     }
 
     private void Update()
     {
         // Controls
-        if (Input.GetKeyDown(KeyCode.W) && _direction != Direction.South)
+        if (Input.GetKeyDown(KeyCode.W) && direction != GameLoop.Direction.South)
         {
-            _direction = Direction.North;
+            direction = GameLoop.Direction.North;
         }
-        else if ((Input.GetKeyDown(KeyCode.D)&& _direction != Direction.West))
+        else if ((Input.GetKeyDown(KeyCode.D) && direction != GameLoop.Direction.West))
         {
-            _direction = Direction.East;
+            direction = GameLoop.Direction.East;
         }
-        else if ((Input.GetKeyDown(KeyCode.S)&& _direction != Direction.North))
+        else if ((Input.GetKeyDown(KeyCode.S) && direction != GameLoop.Direction.North))
         {
-            _direction = Direction.South;
+            direction = GameLoop.Direction.South;
         }
-        else if ((Input.GetKeyDown(KeyCode.A)&& _direction != Direction.East))
+        else if ((Input.GetKeyDown(KeyCode.A) && direction != GameLoop.Direction.East))
         {
-            _direction = Direction.West;
+            direction = GameLoop.Direction.West;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AddToSnake();
         }
     }
 
@@ -70,18 +66,18 @@ public class PlayerMovementBehavior : MonoBehaviour
         GameObject newCurrentTile = null;
         GameObject aheadTile = null;
         TileProperties aheadTileProperties = null;
-        switch (_direction)
+        switch (direction)
         {
-            case Direction.North:
+            case GameLoop.Direction.North:
                 aheadTile = surroundingTiles[0];
                 break;
-            case Direction.East:
+            case GameLoop.Direction.East:
                 aheadTile = surroundingTiles[1];
                 break;
-            case Direction.South:
+            case GameLoop.Direction.South:
                 aheadTile = surroundingTiles[2];
                 break;
-            case Direction.West:
+            case GameLoop.Direction.West:
                 aheadTile = surroundingTiles[3];
                 break;
         }
@@ -90,11 +86,7 @@ public class PlayerMovementBehavior : MonoBehaviour
             PlayerHit?.Invoke();
             return;
         }
-        aheadTileProperties = aheadTile.GetComponent<TileProperties>();
-        List<GameObject> aheadContainedList = aheadTileProperties.contains;
-        // Sees if any Gameobject in the list has the tag "Player"
-        bool hasPlayer = aheadContainedList.Cast<GameObject>().Any(obj => obj.CompareTag("Player"));
-        if (hasPlayer)
+        if (GridHandler.instance.TileContainsPlayer(aheadTile))
         {
             PlayerHit?.Invoke();
             return;
@@ -103,41 +95,46 @@ public class PlayerMovementBehavior : MonoBehaviour
         newCurrentTile = aheadTile;
         
         TileProperties newCurrentTileProperties = newCurrentTile.GetComponent<TileProperties>();
-        _currentTileProperties.contains.Remove(_snakeHead);
+        currentTileProperties.contains.Remove(_snakeHead);
         newCurrentTileProperties.contains.Add(_snakeHead);
         _snakeHead.transform.position = newCurrentTile.transform.position + new Vector3(0, 1, 0);
-        _currentTile = newCurrentTile;
-        _currentTileProperties = newCurrentTileProperties;
-        coordinates = new[] { _currentTileProperties.xValue, _currentTileProperties.yValue };
-        _previousDirection = _direction;
+        currentTile = newCurrentTile;
+        currentTileProperties = newCurrentTileProperties;
+        coordinates = new[] { currentTileProperties.xValue, currentTileProperties.yValue };
+        secondPreviousDirection = firstPreviousDirection;
+        firstPreviousDirection = direction;
     }
 
     private void AddToSnake()
     {
+        GameObject furthestBack = GameLoop.instance.snake.Last();
+        GameLoop.Direction furthestBackDirection = furthestBack.GetComponent<MovementBehavior>().direction;
         GameObject[] surroundingTiles = GridHandler.instance.GrabAdjacentTiles(
-            coordinates[0], coordinates[1]
+            furthestBack.GetComponent<MovementBehavior>().currentTile
         );
 
         GameObject targetTile = null;
-        switch (_previousDirection)
+        switch (furthestBackDirection)
         {
-            case Direction.North:
+            case GameLoop.Direction.North:
                 targetTile = surroundingTiles[2];
                 break;
-            case Direction.East:
+            case GameLoop.Direction.East:
                 targetTile = surroundingTiles[3];
                 break;
-            case Direction.South:
+            case GameLoop.Direction.South:
                 targetTile = surroundingTiles[0];
                 break;
-            case Direction.West:
+            case GameLoop.Direction.West:
                 targetTile = surroundingTiles[1];
                 break;
         }
 
         if (targetTile != null)
         {
-            GameObject newSegment = GridHandler.instance.PlaceObject(_snakeTailPrefab, targetTile);
+            GameObject newSegment = GridHandler.instance.PlaceObject(snakeTailPrefab, targetTile);
+            TailBehavior newSegmentBehavior = newSegment.GetComponent<TailBehavior>();
+            newSegmentBehavior.coordinates = GridHandler.instance.GrabCoordinates(targetTile);
             GameLoop.instance.snake.Add(newSegment);
         }
     }

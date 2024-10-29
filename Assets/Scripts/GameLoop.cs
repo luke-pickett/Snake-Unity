@@ -17,9 +17,13 @@ public class GameLoop : MonoBehaviour
     
     private GameObject _snakeHead;
     public List<GameObject> snake = new List<GameObject>();
+    
+    public enum Direction { North, East, South, West, None }
 
     private int _score = 0;
-    private float timer = 0f;
+    private float _timer = 0f;
+
+    private bool _timerEnabled = true;
 
     private void OnEnable()
     {
@@ -32,19 +36,43 @@ public class GameLoop : MonoBehaviour
         _snakeHead = GridHandler.instance.PlaceObject( snakeHeadPrefab, 0,0);
         snake.Add(_snakeHead);
         _snakeHead.GetComponent<PlayerMovementBehavior>().coordinates = new[] { 0, 0 };
+        _snakeHead.GetComponent<PlayerMovementBehavior>().snakeTailPrefab = snakeTailPrefab;
     }
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= timeBetweenTurns)
+        if (_timerEnabled)
+        {
+            ProgressTimer();
+        }
+    }
+
+    void ProgressTimer()
+    {
+        _timer += Time.deltaTime;
+        if (_timer >= timeBetweenTurns)
         {
             ChangeTurn?.Invoke();
-            timer = 0;
+            _timer = 0;
         }
     }
 
     void Gameover()
     {
-        _snakeHead.GetComponent<PlayerMovementBehavior>().enabled = false;
+        foreach (GameObject segment in snake)
+        {
+            segment.GetComponent<MovementBehavior>().enabled = false;
+        }
+        
+        _timerEnabled = false;
+        foreach (GameObject segment in snake)
+        {
+            StartCoroutine(DestroySegment(segment));
+        }
+    }
+
+    private IEnumerator DestroySegment(GameObject segment)
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(segment);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -61,6 +62,12 @@ public class GridHandler : MonoBehaviour
             return null;
         }
         return _grid[xValue, yValue];
+    }
+
+    public int[] GrabCoordinates(GameObject tile)
+    {
+        TileProperties tileProperties = tile.GetComponent<TileProperties>();
+        return new[] { tileProperties.xValue, tileProperties.yValue };
     }
 
     public bool IsEdge(int xValue, int yValue)
@@ -231,6 +238,20 @@ public class GridHandler : MonoBehaviour
                 Destroy(obj);
             }
         }
+    }
+
+    public bool TileContainsPlayer(int xValue, int yValue)
+    {
+        GameObject tile = GrabTile(xValue, yValue);
+        TileProperties tileProperties = tile.GetComponent<TileProperties>();
+        List<GameObject> containsList = tileProperties.contains;
+        return containsList.Cast<GameObject>().Any(obj => obj.CompareTag("Player"));
+    }
+    public bool TileContainsPlayer(GameObject tile)
+    {
+        TileProperties tileProperties = tile.GetComponent<TileProperties>();
+        List<GameObject> containsList = tileProperties.contains;
+        return containsList.Cast<GameObject>().Any(obj => obj.CompareTag("Player"));
     }
     
 
