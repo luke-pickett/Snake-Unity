@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float _cameraHeight = 10f; // Adjustable camera height
+    [SerializeField] private float _cameraHeight = 10f;
 
     void Start()
     {
-        if (GridHandler.instance != null)
-        {
-            SetCameraPosition(); 
-        }
+            SetCameraPosition();
     }
 
     void SetCameraPosition()
