@@ -15,12 +15,13 @@ public class FruitBehavior : MonoBehaviour
 
     private void OnEnable()
     {
-        GameLoop.ChangeTurn += CheckIfEaten;
+        
     }
 
     private void Update()
     {
         transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
+        CheckIfEaten();
     }
 
     private void CheckIfEaten()
