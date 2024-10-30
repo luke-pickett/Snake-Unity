@@ -557,7 +557,7 @@ MonoBehaviour:
   _spawnTimer: 5
   _spawnReductionFactor: 0.95
   _minSpawnTime: 0.5
-  _scale: 50
+  _scale: 100
 --- !u!4 &483880993
 Transform:
   m_ObjectHideFlags: 0
