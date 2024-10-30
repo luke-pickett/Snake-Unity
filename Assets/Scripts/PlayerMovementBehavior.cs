@@ -52,10 +52,6 @@ public class PlayerMovementBehavior : MovementBehavior
             direction = GameLoop.Direction.West;
         }
         
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            AddToSnake();
-        }
     }
 
     private void Move()

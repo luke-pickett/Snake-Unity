@@ -8,9 +8,10 @@ public class FruitBehavior : MonoBehaviour
 {
     public GameObject occupyingTile;
     private List<GameObject> _tileList;
-    
+
     public delegate void PlayerDetected();
     public static event PlayerDetected FruitCollected;
+
     private void OnEnable()
     {
         GameLoop.ChangeTurn += CheckIfEaten;
@@ -24,7 +25,13 @@ public class FruitBehavior : MonoBehaviour
         if (hasPlayer)
         {
             FruitCollected?.Invoke();
-            Destroy(this);
+            Destroy(gameObject); 
         }
     }
+
+    private void OnDisable()
+    {
+        GameLoop.ChangeTurn -= CheckIfEaten;
+    }
 }
+

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1763393798741154019}
   - component: {fileID: 7313125622053908239}
   - component: {fileID: 7698963527068498929}
+  - component: {fileID: -3410603259869669691}
   m_Layer: 0
   m_Name: SunkistB
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8058345796982829707}
   m_LocalRotation: {x: -0.86602545, y: 0, z: 0, w: 0.49999994}
-  m_LocalPosition: {x: 14.017917, y: 0, z: 9.942666}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-3410603259869669691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058345796982829707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e8b87bd7ad7b42429ee0fb1c85bbade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupyingTile: {fileID: 0}
