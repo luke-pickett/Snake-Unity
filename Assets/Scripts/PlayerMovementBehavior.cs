@@ -10,6 +10,8 @@ public class PlayerMovementBehavior : MovementBehavior
 {
     private GameObject _snakeHead;
 
+    private AudioSource _audioSource;
+
     public GameObject snakeTailPrefab;
 
     public delegate void HeadCollided();
@@ -20,6 +22,7 @@ public class PlayerMovementBehavior : MovementBehavior
     {
         GameLoop.ChangeTurn += Move;
         FruitBehavior.FruitCollected += AddToSnake;
+        FruitBehavior.FruitCollected += PlayCollectionSound;
     }
 
     private void Start()
@@ -30,6 +33,8 @@ public class PlayerMovementBehavior : MovementBehavior
         _snakeHead = gameObject;
         currentTile = GridHandler.instance.GrabTile(coordinates[0], coordinates[1]);
         currentTileProperties = currentTile.GetComponent<TileProperties>();
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -134,5 +139,10 @@ public class PlayerMovementBehavior : MovementBehavior
             newSegmentBehavior.coordinates = GridHandler.instance.GrabCoordinates(targetTile);
             GameLoop.instance.snake.Add(newSegment);
         }
+    }
+
+    private void PlayCollectionSound()
+    {
+        _audioSource.Play();
     }
 }

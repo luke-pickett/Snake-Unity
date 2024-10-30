@@ -59,6 +59,7 @@ public class GameLoop : MonoBehaviour
             _gameStarted = true; // Set the flag to true
             startUI.SetActive(false); // Hide the StartUI
             Time.timeScale = 1; // Unfreeze time to start the game
+            Camera.main.GetComponent<AudioSource>().Play(); // Play Start sound
 
             _snakeHead = GridHandler.instance.PlaceObject(snakeHeadPrefab, 0, 0);
             snake.Add(_snakeHead);
