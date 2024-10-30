@@ -785,7 +785,7 @@ MonoBehaviour:
     type: 3}
   snakeTailPrefab: {fileID: 5391016846620405751, guid: 9fe42eb7885edae4687f6869ebe5275a,
     type: 3}
-  timeBetweenTurns: 0.5
+  timeBetweenTurns: 0.4
   snake: []
   ScoreUI: {fileID: 118448183}
   startUI: {fileID: 1285970094}
