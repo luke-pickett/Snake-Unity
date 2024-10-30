@@ -55,12 +55,13 @@ public class FruitSpawnBehaviour : MonoBehaviour
 
         // Instantiate the prefab and set its scale
         GameObject fruitObject = Instantiate(fruitPrefab, targetTilePosition, Quaternion.identity);
-        fruitObject.transform.localScale = Vector3.one * _scale;
-
-        // Assign the occupyingTile to the FruitBehaviour, if it exists
+    
+        // Get the FruitBehavior component
         FruitBehavior fruitBehavior = fruitObject.GetComponent<FruitBehavior>();
         if (fruitBehavior != null)
         {
+            // Set the target scale in FruitBehavior
+            fruitBehavior.SetTargetScale(Vector3.one * _scale); // Use the scale value
             fruitBehavior.occupyingTile = targetTile; // Assign the tile it occupies
         }
         else
