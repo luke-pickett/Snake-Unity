@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class FruitBehavior : MonoBehaviour
 {
+    private float _rotationSpeed = 50f; 
     public GameObject occupyingTile;
     private List<GameObject> _tileList;
 
@@ -15,6 +16,11 @@ public class FruitBehavior : MonoBehaviour
     private void OnEnable()
     {
         GameLoop.ChangeTurn += CheckIfEaten;
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
     }
 
     private void CheckIfEaten()
