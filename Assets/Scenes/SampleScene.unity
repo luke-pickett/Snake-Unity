@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Score: 100'
+  m_text: 'Score: 20'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -557,7 +557,7 @@ MonoBehaviour:
   _spawnTimer: 5
   _spawnReductionFactor: 0.95
   _minSpawnTime: 0.5
-  _scale: 50
+  _scale: 100
 --- !u!4 &483880993
 Transform:
   m_ObjectHideFlags: 0
