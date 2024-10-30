@@ -730,6 +730,7 @@ GameObject:
   - component: {fileID: 1092432077}
   - component: {fileID: 1092432078}
   - component: {fileID: 1092432079}
+  - component: {fileID: 1092432080}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -789,6 +790,18 @@ MonoBehaviour:
   ScoreUI: {fileID: 118448183}
   startUI: {fileID: 1285970094}
   fruitSpawnBehaviour: {fileID: 0}
+--- !u!114 &1092432080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092432076}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7f65dc81d50e142aa40e626a561fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1169944963
 GameObject:
   m_ObjectHideFlags: 0

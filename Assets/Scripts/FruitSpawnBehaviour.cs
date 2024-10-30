@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class FruitSpawnBehaviour : MonoBehaviour
 {
+    public static FruitSpawnBehaviour instance;
+    
     [SerializeField] private GameObject[] _fruitGallery; // Array of fruit prefabs
     [SerializeField] private float _spawnTimer = 5f; // Initial spawn timer
     [SerializeField] private float _spawnReductionFactor = 0.95f; // Reduce timer by 5% every spawn
@@ -17,6 +19,7 @@ public class FruitSpawnBehaviour : MonoBehaviour
 
     void Start()
     {
+        instance = this;
         _currentSpawnTime = _spawnTimer;
         _timer = 0;
     }

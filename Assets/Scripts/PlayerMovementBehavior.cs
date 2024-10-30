@@ -35,19 +35,19 @@ public class PlayerMovementBehavior : MovementBehavior
     private void Update()
     {
         // Controls
-        if (Input.GetKeyDown(KeyCode.W) && direction != GameLoop.Direction.South)
+        if (Input.GetKeyDown(KeyCode.W) && firstPreviousDirection != GameLoop.Direction.South)
         {
             direction = GameLoop.Direction.North;
         }
-        else if ((Input.GetKeyDown(KeyCode.D) && direction != GameLoop.Direction.West))
+        else if ((Input.GetKeyDown(KeyCode.D) && firstPreviousDirection != GameLoop.Direction.West))
         {
             direction = GameLoop.Direction.East;
         }
-        else if ((Input.GetKeyDown(KeyCode.S) && direction != GameLoop.Direction.North))
+        else if ((Input.GetKeyDown(KeyCode.S) && firstPreviousDirection != GameLoop.Direction.North))
         {
             direction = GameLoop.Direction.South;
         }
-        else if ((Input.GetKeyDown(KeyCode.A) && direction != GameLoop.Direction.East))
+        else if ((Input.GetKeyDown(KeyCode.A) && firstPreviousDirection != GameLoop.Direction.East))
         {
             direction = GameLoop.Direction.West;
         }
@@ -126,7 +126,8 @@ public class PlayerMovementBehavior : MovementBehavior
                 break;
         }
 
-        if (targetTile != null)
+        bool tileExists = (targetTile != null);
+        if (tileExists)
         {
             GameObject newSegment = GridHandler.instance.PlaceObject(snakeTailPrefab, targetTile);
             TailBehavior newSegmentBehavior = newSegment.GetComponent<TailBehavior>();

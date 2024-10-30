@@ -41,7 +41,6 @@ public class TailBehavior : MovementBehavior
             coordinates[0], coordinates[1]
         );
         GameObject aheadTile = null;
-        TileProperties aheadTileProperties = null;
         switch (direction)
         {
             case GameLoop.Direction.North:
@@ -62,15 +61,9 @@ public class TailBehavior : MovementBehavior
         bool tileAheadExists = (aheadTile != null);
         if (validDirection && tileAheadExists)
         {
-            aheadTileProperties = aheadTile.GetComponent<TileProperties>();
-            currentTileProperties.contains.Remove(_tailSegment);
-            aheadTileProperties.contains.Add(_tailSegment);
-            _tailSegment.transform.position = aheadTile.transform.position + new Vector3(0, 1, 0);
-            currentTile = aheadTile;
-            currentTileProperties = aheadTileProperties;
-            coordinates = new[] { currentTileProperties.xValue, currentTileProperties.yValue };
-            secondPreviousDirection = firstPreviousDirection;
-            firstPreviousDirection = direction;
+            ChangeTile(aheadTile, _tailSegment);
         }
     }
+
+    
 }

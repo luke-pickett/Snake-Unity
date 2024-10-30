@@ -11,6 +11,7 @@ public class GameLoop : MonoBehaviour
     [SerializeField] private GameObject snakeTailPrefab;
     [SerializeField] private float timeBetweenTurns;
 
+    // Due to several issues with using this event to time things, ChangeTurn should only be used for movement
     public delegate void TurnTimeOver();
     public static event TurnTimeOver ChangeTurn;
 
@@ -20,11 +21,14 @@ public class GameLoop : MonoBehaviour
     public enum Direction { North, East, South, West, None }
 
     private int _score = 20;
-    private float _timer = 0f;
+    private float _turnTimer = 0f;
 
     private bool _timerEnabled = true;
     private bool _gameStarted = false; // Flag to check if the game has started
     private Coroutine _scoreDecrementCoroutine; // Reference to the score decrement coroutine
+
+    private float _destructionTimer = 0f;
+    private bool _runDestruction = false;
 
     [SerializeField] private TextMeshProUGUI ScoreUI; 
     [SerializeField] private GameObject startUI; 
@@ -34,6 +38,7 @@ public class GameLoop : MonoBehaviour
     {
         PlayerMovementBehavior.PlayerHit += Gameover;
         FruitBehavior.FruitCollected += UpdateScore; // Subscribe to the fruit collected event
+        FruitBehavior.FruitCollected += SpeedUp;
     }
 
     void Start()
@@ -66,22 +71,31 @@ public class GameLoop : MonoBehaviour
 
         if (_timerEnabled)
         {
-            ProgressTimer();
+            ProgressTurnTimer();
         }
     }
 
-    void ProgressTimer()
+    void ProgressTurnTimer()
     {
-        _timer += Time.deltaTime;
-        if (_timer >= timeBetweenTurns)
+        _turnTimer += Time.deltaTime;
+        if (_turnTimer >= timeBetweenTurns)
         {
             ChangeTurn?.Invoke();
-            _timer = 0;
+            _turnTimer = 0;
+        }
+    }
+
+    void SpeedUp()
+    {
+        if (timeBetweenTurns >= 0.1f)
+        {
+            timeBetweenTurns -= 0.05f;
         }
     }
 
     void Gameover()
     {
+        FruitSpawnBehaviour.instance.enabled = false;
         foreach (GameObject segment in snake)
         {
             segment.GetComponent<MovementBehavior>().enabled = false;
@@ -102,16 +116,7 @@ public class GameLoop : MonoBehaviour
             fruitSpawnBehaviour.enabled = false; // Disable the FruitSpawnBehaviour script
         }
 
-        foreach (GameObject segment in snake)
-        {
-            StartCoroutine(DestroySegment(segment));
-        }
-    }
-
-    private IEnumerator DestroySegment(GameObject segment)
-    {
-        yield return new WaitForSeconds(1);
-        Destroy(segment);
+        gameObject.GetComponent<SnakeDestruction>().enabled = true;
     }
 
     private void UpdateScore()

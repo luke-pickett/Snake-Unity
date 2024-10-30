@@ -12,4 +12,17 @@ public class MovementBehavior : MonoBehaviour
     
     public GameObject currentTile;
     public TileProperties currentTileProperties;
+    
+    protected void ChangeTile(GameObject aheadTile, GameObject movingObject)
+    {
+        TileProperties aheadTileProperties = aheadTile.GetComponent<TileProperties>();
+        currentTileProperties.contains.Remove(movingObject);
+        aheadTileProperties.contains.Add(movingObject);
+        movingObject.transform.position = aheadTile.transform.position + new Vector3(0, 1, 0);
+        currentTile = aheadTile;
+        currentTileProperties = aheadTileProperties;
+        coordinates = new[] { currentTileProperties.xValue, currentTileProperties.yValue };
+        secondPreviousDirection = firstPreviousDirection;
+        firstPreviousDirection = direction;
+    }
 }
