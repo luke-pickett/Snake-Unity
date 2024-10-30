@@ -8,7 +8,7 @@ public class FruitSpawnBehaviour : MonoBehaviour
 {
     public static FruitSpawnBehaviour instance;
     
-    [SerializeField] private GameObject[] _fruitGallery; // Array of fruit prefabs
+    [SerializeField] private GameObject[] _fruitGallery; 
     [SerializeField] private float _spawnTimer = 5f; // Initial spawn timer
     [SerializeField] private float _spawnReductionFactor = 0.95f; // Reduce timer by 5% every spawn
     [SerializeField] private float _minSpawnTime = 0.5f; // Minimum limit for spawn time

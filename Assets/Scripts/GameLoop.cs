@@ -11,7 +11,7 @@ public class GameLoop : MonoBehaviour
     [SerializeField] private GameObject snakeTailPrefab;
     [SerializeField] private float timeBetweenTurns;
 
-    // Due to several issues with using this event to time things, ChangeTurn should only be used for movement
+    
     public delegate void TurnTimeOver();
     public static event TurnTimeOver ChangeTurn;
 
@@ -24,20 +24,20 @@ public class GameLoop : MonoBehaviour
     private float _turnTimer = 0f;
 
     private bool _timerEnabled = true;
-    private bool _gameStarted = false; // Flag to check if the game has started
-    private Coroutine _scoreDecrementCoroutine; // Reference to the score decrement coroutine
+    private bool _gameStarted = false; 
+    private Coroutine _scoreDecrementCoroutine; 
 
     private float _destructionTimer = 0f;
     private bool _runDestruction = false;
 
     [SerializeField] private TextMeshProUGUI ScoreUI; 
     [SerializeField] private GameObject startUI; 
-    [SerializeField] private FruitSpawnBehaviour fruitSpawnBehaviour; // Reference to the FruitSpawnBehaviour script
+    private FruitSpawnBehaviour fruitSpawnBehaviour; 
 
     private void OnEnable()
     {
         PlayerMovementBehavior.PlayerHit += Gameover;
-        FruitBehavior.FruitCollected += UpdateScore; // Subscribe to the fruit collected event
+        FruitBehavior.FruitCollected += UpdateScore; 
         FruitBehavior.FruitCollected += SpeedUp;
     }
 
@@ -54,11 +54,11 @@ public class GameLoop : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKeyDown && !_gameStarted) // Check for any key press and if the game hasn't started
+        if (Input.anyKeyDown && !_gameStarted) 
         {
-            _gameStarted = true; // Set the flag to true
-            startUI.SetActive(false); // Hide the StartUI
-            Time.timeScale = 1; // Unfreeze time to start the game
+            _gameStarted = true; 
+            startUI.SetActive(false); 
+            Time.timeScale = 1;
 
             _snakeHead = GridHandler.instance.PlaceObject(snakeHeadPrefab, 0, 0);
             snake.Add(_snakeHead);
@@ -113,7 +113,7 @@ public class GameLoop : MonoBehaviour
         // Disable fruit spawning
         if (fruitSpawnBehaviour != null)
         {
-            fruitSpawnBehaviour.enabled = false; // Disable the FruitSpawnBehaviour script
+            fruitSpawnBehaviour.enabled = false; 
         }
 
         gameObject.GetComponent<SnakeDestruction>().enabled = true;
@@ -121,7 +121,7 @@ public class GameLoop : MonoBehaviour
 
     private void UpdateScore()
     {
-        _score += 5; // Increase score by 5 when fruit is collected
+        _score += 5; 
         UpdateScoreUI();
     }
 
@@ -129,14 +129,14 @@ public class GameLoop : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1); // Wait for 1 second
-            _score = Mathf.Max(0, _score - 1); // Decrease score by 1, ensuring it doesn't go below 0
+            yield return new WaitForSeconds(1); 
+            _score = Mathf.Max(0, _score - 1); 
             UpdateScoreUI();
         }
     }
 
     private void UpdateScoreUI()
     {
-        ScoreUI.text = "Score: " + _score; // Update the score display
+        ScoreUI.text = "Score: " + _score; 
     }
 }
